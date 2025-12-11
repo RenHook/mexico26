@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>México Smart Travel '26</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #E91E63;
+            /* Mexican Pink */
+            --primary-dark: #C2185B;
+            --accent: #FFC107;
+            --bg: #F5F5F5;
+            --text: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Mobile Phone Container Simulator */
+        #app-frame {
+            width: 100%;
+            max-width: 414px;
+            height: 100%;
+            background-color: var(--bg);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            flex-grow: 1;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            visibility: hidden;
+            padding: 5px 10px;
+        }
+
+        .back-btn:hover {
+            opacity: 0.8;
+        }
+
+        .home-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            visibility: hidden;
+            padding: 5px 10px;
+        }
+
+        .home-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Scrollable Content Area */
+        #content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* --- SECTIONS --- */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 1. Welcome / Menu Grid */
+        .hero {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .language-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .language-bar select {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .menu-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-card:active {
+            transform: scale(0.98);
+        }
+
+        .menu-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .menu-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        /* Generic Card Style */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .card p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .card a {
+            text-decoration: none;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Forms */
+        select,
+        input,
+        button.action-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button.action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button.action-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 80px;
+        }
+
+        .msg {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .msg.me {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg.other {
+            background-color: #e0e0e0;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-input-area {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 10px 15px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .chat-input-area button {
+            width: auto;
+            padding: 12px 20px;
+            margin: 0;
+        }
+
+        /* Navigation Bar (Bottom) */
+        .bottom-bar {
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .match-alert {
+            background-color: var(--accent);
+            color: #000;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Logo image */
+        .logo-img {
+            width: 90%;
+            max-width: 320px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        /* Section headers */
+        .page>h2 {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .page>p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Lists in cards */
+        .card ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .card li {
+            margin: 5px 0;
+        }
+
+        /* Emergency styles */
+        .emergency-card {
+            border: 2px solid #d32f2f;
+            background-color: #ffebee;
+        }
+
+        .emergency-number {
+            text-align: center;
+            margin: 10px 0;
+            color: #d32f2f;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        /* Country result card */
+        .country-result {
+            border-left: 5px solid var(--primary);
+        }
+
+        /* FIFA card */
+        .fifa-card {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, #fff 0%, #fce4ec 100%);
+        }
+
+        /* Small text */
+        small {
+            font-size: 0.8rem;
+        }
+
+        .warning-text {
+            color: #d32f2f;
+        }
+
+        /* World Cup Groups Styles */
+        .groups-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .group-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .group-header {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            color: white;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .team-row {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .team-row:last-child {
+            border-bottom: none;
+        }
+
+        .team-row.playoff {
+            background: #fff3e0;
+            font-style: italic;
+            font-size: 0.75rem;
+        }
+
+        .flag {
+            font-size: 1.1rem;
+        }
+
+        /* AI Assistant Styles */
+        .ai-chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .ai-msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .ai-msg.user {
+            flex-direction: row-reverse;
+        }
+
+        .ai-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .ai-msg.user .ai-avatar {
+            background: #333;
+        }
+
+        .ai-bubble {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            max-width: 85%;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .ai-msg.user .ai-bubble {
+            background: var(--primary);
+            color: white;
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .suggestion-btn {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .ai-input-area {
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: var(--bg);
+            padding-top: 10px;
+        }
+
+        .ai-input-area input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .ai-input-area button {
+            width: auto;
+            padding: 12px 20px;
+            margin: 0;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 10px 15px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app-frame">
+        <header>
+            <button class="back-btn" id="backBtn" onclick="goHome()">←</button>
+            <h1 id="headerTitle">MÉXICO '26</h1>
+            <button class="home-btn" id="homeBtn" onclick="goHome()">🏡</button>
+        </header>
+
+        <div id="content-area">
+            <!-- HOME PAGE -->
+            <div id="home" class="page active">
+                <div class="language-bar">
+                    <select id="langSelect" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="pt">Português</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="it">Italiano</option>
+                        <option value="de">Deutsch</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+
+                <div class="hero">
+                    <img src="data:image/png;base64,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"
+                        id="logoImage" alt="México Smart Travel Assistant 26" class="logo-img">
+
+                    <h2 data-i18n="welcome">¡Hola! Welcome.</h2>
+                    <p data-i18n="subtitle" style="color: #666; font-size: 0.9rem;">Your smart assistant for the 2026
+                        season. Tap a category below to begin your journey.</p>
+                </div>
+
+                <div class="menu-grid">
+                    <div class="menu-card" onclick="navTo('lost-phone')">
+                        <span class="menu-icon">📱</span>
+                        <span class="menu-title" data-i18n="menu_lost_phone">Lost Phone</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('lost-passport')">
+                        <span class="menu-icon">🛂</span>
+                        <span class="menu-title" data-i18n="menu_lost_passport">Lost Passport</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('wc-groups')">
+                        <span class="menu-icon">🏆</span>
+                        <span class="menu-title" data-i18n="menu_groups">WC Groups</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('ai-assistant')">
+                        <span class="menu-icon">🤖</span>
+                        <span class="menu-title" data-i18n="menu_ai">AI Assistant</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('embassy')">
+                        <span class="menu-icon">🏛</span>
+                        <span class="menu-title" data-i18n="menu_embassies">Embassies</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('country-info')">
+                        <span class="menu-icon">🌍</span>
+                        <span class="menu-title" data-i18n="menu_country">My Country Info</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('info')">
+                        <span class="menu-icon">ℹ️</span>
+                        <span class="menu-title" data-i18n="menu_info">Info & Match Day</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('dining')">
+                        <span class="menu-icon">🍽️</span>
+                        <span class="menu-title" data-i18n="menu_dining">Dining Guide</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('transport')">
+                        <span class="menu-icon">🚇</span>
+                        <span class="menu-title" data-i18n="menu_transport">Transport</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('emergency')">
+                        <span class="menu-icon">🚑</span>
+                        <span class="menu-title" data-i18n="menu_emergency">Emergency</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('legal')">
+                        <span class="menu-icon">⚖️</span>
+                        <span class="menu-title" data-i18n="menu_legal">Legal & Insurance</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('activities')">
+                        <span class="menu-icon">⚽</span>
+                        <span class="menu-title" data-i18n="menu_itineraries">Itineraries</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('prices')">
+                        <span class="menu-icon">💰</span>
+                        <span class="menu-title" data-i18n="menu_prices">Price Guide</span>
+                    </div>
+                    <div class="menu-card" onclick="navTo('chat')">
+                        <span class="menu-icon">💬</span>
+                        <span class="menu-title" data-i18n="menu_chat">Community Chat</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMBASSY PAGE -->
+            <div id="embassy" class="page">
+                <h2 data-i18n="embassy_title">Embassy Directory</h2>
+                <p data-i18n="embassy_subtitle">Mission contacts in CDMX.</p>
+
+                <div class="card">
+                    <h3>🇧🇷 Brazil</h3>
+                    <p>Lomas de Chapultepec</p>
+                    <a href="https://wa.me/525552014531" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇨🇦 Canada</h3>
+                    <p>Polanco V Secc</p>
+                    <a href="https://wa.me/525557247900" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇫🇷 France</h3>
+                    <p>Polanco, Miguel Hidalgo</p>
+                    <a href="https://wa.me/525591719700" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇪🇸 Spain</h3>
+                    <p>Polanco</p>
+                    <a href="https://wa.me/525552822974" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <!-- More embassies here (truncated for brevity, but could add from prompt) -->
+                <div class="card">
+                    <h3>🇨🇳 China</h3>
+                    <p>San Ángel, Álvaro Obregón</p>
+                    <a href="https://wa.me/525556160609" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇩🇪 Germany</h3>
+                    <p>Colonia Polanco</p>
+                    <a href="https://wa.me/525552832200" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇮🇹 Italy</h3>
+                    <p>Lomas de Chapultepec</p>
+                    <a href="https://wa.me/525555963655" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇯🇵 Japan</h3>
+                    <p>Paseo de la Reforma</p>
+                    <a href="https://wa.me/525552110028" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+                <div class="card">
+                    <h3>🇰🇷 Korea (South)</h3>
+                    <p>Lomas de Chapultepec</p>
+                    <a href="https://wa.me/525552029866" target="_blank" style="color:#25D366; font-weight:bold;">💬
+                        WhatsApp Embassy</a>
+                </div>
+            </div>
+
+            <!-- LOST PHONE PAGE -->
+            <div id="lost-phone" class="page">
+                <h2 data-i18n="lost_phone_title">📱 Lost Your Phone?</h2>
+                <p data-i18n="lost_phone_subtitle">Don't panic! Follow these steps to protect yourself and try to
+                    recover your device.</p>
+
+                <div class="card" style="border-left: 4px solid #d32f2f;">
+                    <h3 data-i18n="phone_step1_title">🚨 Step 1: Immediate Actions</h3>
+                    <p data-i18n="phone_step1_time"><strong>Within the first hour:</strong></p>
+                    <ul>
+                        <li data-i18n="phone_step1_1">Use another device to call your phone</li>
+                        <li data-i18n="phone_step1_2">Check "Find My iPhone" or "Find My Device" (Android)</li>
+                        <li data-i18n="phone_step1_3">Lock your phone remotely if possible</li>
+                        <li data-i18n="phone_step1_4">Enable "Lost Mode" to display a message</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="phone_step2_title">🔒 Step 2: Secure Your Accounts</h3>
+                    <ul>
+                        <li data-i18n="phone_step2_1">Change passwords for email, banking apps</li>
+                        <li data-i18n="phone_step2_2">Log out of all sessions remotely (Google, Apple, social media)
+                        </li>
+                        <li data-i18n="phone_step2_3">Notify your bank to watch for suspicious activity</li>
+                        <li data-i18n="phone_step2_4">Disable mobile payments (Apple Pay, Google Pay)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="phone_step3_title">📞 Step 3: Report & Block</h3>
+                    <p data-i18n="phone_step3_carrier"><strong>Contact your carrier to:</strong></p>
+                    <ul>
+                        <li data-i18n="phone_step3_1">Block your SIM card</li>
+                        <li data-i18n="phone_step3_2">Report IMEI as stolen</li>
+                        <li data-i18n="phone_step3_3">Request a replacement SIM</li>
+                    </ul>
+                    <p style="margin-top: 10px;" data-i18n="phone_carriers"><strong>Mexican carriers:</strong></p>
+                    <p>Telcel: 800-123-2222 | AT&T: 800-288-2835 | Movistar: 800-888-8366</p>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="phone_step4_title">👮 Step 4: File a Police Report</h3>
+                    <p data-i18n="phone_step4_text">Go to the nearest "Ministerio Público" to file a report. You'll
+                        need:</p>
+                    <ul>
+                        <li data-i18n="phone_step4_1">Your passport or ID</li>
+                        <li data-i18n="phone_step4_2">Phone details (model, IMEI if known)</li>
+                        <li data-i18n="phone_step4_3">Location and time of loss/theft</li>
+                    </ul>
+                    <button class="action-btn" onclick="alert('Tourist Police: +52 55 5286 7097')"
+                        data-i18n="phone_contact_police">📞 Contact Tourist Police</button>
+                </div>
+            </div>
+
+            <!-- LOST PASSPORT PAGE -->
+            <div id="lost-passport" class="page">
+                <h2 data-i18n="lost_passport_title">🛂 Lost Your Passport?</h2>
+                <p data-i18n="lost_passport_subtitle">Stay calm. Here's exactly what to do to get back home safely.</p>
+
+                <div class="card emergency-card">
+                    <h3 data-i18n="passport_first_step">⚠️ Important First Step</h3>
+                    <p style="text-align: center; font-weight: bold;" data-i18n="passport_contact_embassy">Contact your
+                        embassy IMMEDIATELY</p>
+                    <button class="action-btn" style="background: #d32f2f;" onclick="navTo('embassy')"
+                        data-i18n="passport_go_embassy">🏛 Go to Embassy Directory</button>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="passport_step1_title">📋 Step 1: File a Police Report</h3>
+                    <p data-i18n="passport_step1_text">You'll need an official report ("Acta de Extravío") from the
+                        police. Go to:</p>
+                    <ul>
+                        <li data-i18n="passport_step1_1"><strong>Ministerio Público</strong> - Official police station
+                        </li>
+                        <li data-i18n="passport_step1_2">Bring any ID you have (driver's license, copies of passport)
+                        </li>
+                        <li data-i18n="passport_step1_3">Get a certified copy of the report</li>
+                    </ul>
+                    <p><em data-i18n="passport_step1_note">This document is required by your embassy.</em></p>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="passport_step2_title">🏛 Step 2: Visit Your Embassy</h3>
+                    <p data-i18n="passport_step2_bring"><strong>Bring with you:</strong></p>
+                    <ul>
+                        <li data-i18n="passport_step2_1">Police report (Acta de Extravío)</li>
+                        <li data-i18n="passport_step2_2">2 passport-sized photos</li>
+                        <li data-i18n="passport_step2_3">Any form of ID</li>
+                        <li data-i18n="passport_step2_4">Proof of citizenship (birth certificate copy, old passport
+                            copy)</li>
+                        <li data-i18n="passport_step2_5">Travel itinerary / flight tickets</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="passport_step3_title">📄 Step 3: Emergency Travel Document</h3>
+                    <p data-i18n="passport_step3_text">Your embassy will issue one of these:</p>
+                    <ul>
+                        <li data-i18n="passport_step3_1"><strong>Emergency Passport</strong> - Full validity, takes
+                            longer</li>
+                        <li data-i18n="passport_step3_2"><strong>Emergency Travel Document (ETD)</strong> - One-way trip
+                            home only, faster</li>
+                    </ul>
+                    <p data-i18n="passport_processing"><strong>Processing time:</strong> 1-3 business days typically</p>
+                    <p data-i18n="passport_cost"><strong>Cost:</strong> Varies by country ($100-200 USD typical)</p>
+                </div>
+
+                <div class="card" style="background: #fff3e0;">
+                    <h3 data-i18n="passport_step4_title">✈️ Step 4: Mexican Exit Requirements</h3>
+                    <p data-i18n="passport_step4_text">To leave Mexico without your original passport:</p>
+                    <ul>
+                        <li data-i18n="passport_step4_1">Emergency travel document from embassy</li>
+                        <li data-i18n="passport_step4_2">Police report</li>
+                        <li data-i18n="passport_step4_3">Copy of your FMM (tourist card) if available</li>
+                    </ul>
+                    <p><em data-i18n="passport_step4_note">Immigration (INM) may need to verify your entry - allow extra
+                            time at airport.</em></p>
+                </div>
+
+                <div class="card" style="background: #e8f5e9;">
+                    <h3 data-i18n="passport_tips_title">💡 Prevention Tips</h3>
+                    <ul>
+                        <li data-i18n="passport_tip1">Keep digital copies of passport in email/cloud</li>
+                        <li data-i18n="passport_tip2">Carry a photocopy separately from original</li>
+                        <li data-i18n="passport_tip3">Use hotel safe for passport storage</li>
+                        <li data-i18n="passport_tip4">Register with your embassy before traveling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- WORLD CUP GROUPS PAGE -->
+            <div id="wc-groups" class="page">
+                <h2 data-i18n="groups_title">🏆 FIFA World Cup 2026 Groups</h2>
+                <p data-i18n="groups_subtitle">All 12 groups for the tournament in USA, Mexico & Canada.</p>
+                <div class="groups-container">
+                    <!-- Group A -->
+                    <div class="group-card">
+                        <div class="group-header">GROUP A</div>
+                        <div class="team-row"><span class="flag">🇲🇽</span> Mexico</div>
+                        <div class="team-row"><span class="flag">🇿🇦</span> South Africa</div>
+                        <div class="team-row"><span class="flag">🇰🇷</span> Korea Republic</div>
+                        <div class="team-row playoff"><span class="flag">🏆</span> Winner Play-off D</div>
+                    </div>
+                    <!-- Group B -->
+                    <div class="group-card">
+                        <div class="group-header">GROUP B</div>
+                        <div class="team-row"><span class="flag">🇨🇦</span> Canada</div>
+                        <div class="team-row playoff"><span class="flag">🏆</span> Winner Play-off A</div>
+                        <div class="team-row"><span class="flag">🇶🇦</span> Qatar</div>
+                        <div class="team-row"><span class="flag">🇨🇭</span> Switzerland</div>
+                    </div>
+                    <!-- Group C -->
+                    <div class="group-card">
+                        <div class="group-header">GROUP C</div>
+                        <div class="team-row"><span class="flag">🇧🇷</span> Brazil</div>
+                        <div class="team-row"><span class="flag">🇲🇦</span> Morocco</div>
+                        <div class="team-row"><span class="flag">🇭🇹</span> Haiti</div>
+                        <div class="team-row"><span class="flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span> Scotland</div>
+                    </div>
+                    <!-- Other groups could be added -->
+                    <div class="group-card">
+                        <div class="group-header">GROUP D</div>
+                        <div class="team-row"><span class="flag">🇺🇸</span> USA</div>
+                        <div class="team-row"><span class="flag">🇵🇾</span> Paraguay</div>
+                        <div class="team-row"><span class="flag">🇦🇺</span> Australia</div>
+                        <div class="team-row playoff"><span class="flag">🏆</span> Winner Play-off C</div>
+                    </div>
+                    <div class="group-card">
+                        <div class="group-header">GROUP E</div>
+                        <div class="team-row"><span class="flag">🇩🇪</span> Germany</div>
+                        <div class="team-row"><span class="flag">🇨🇼</span> Curaçao</div>
+                        <div class="team-row"><span class="flag">🇨🇮</span> Côte d'Ivoire</div>
+                        <div class="team-row"><span class="flag">🇪🇨</span> Ecuador</div>
+                    </div>
+                    <div class="group-card">
+                        <div class="group-header">GROUP G</div>
+                        <div class="team-row"><span class="flag">🇧🇪</span> Belgium</div>
+                        <div class="team-row"><span class="flag">🇪🇬</span> Egypt</div>
+                        <div class="team-row"><span class="flag">🇮🇷</span> IR Iran</div>
+                        <div class="team-row"><span class="flag">🇳🇿</span> New Zealand</div>
+                    </div>
+                    <div class="group-card">
+                        <div class="group-header">GROUP I</div>
+                        <div class="team-row"><span class="flag">🇫🇷</span> France</div>
+                        <div class="team-row"><span class="flag">🇸🇳</span> Senegal</div>
+                        <div class="team-row playoff"><span class="flag">🏆</span> Winner Play-off 2</div>
+                        <div class="team-row"><span class="flag">🇳🇴</span> Norway</div>
+                    </div>
+                    <div class="group-card">
+                        <div class="group-header">GROUP J</div>
+                        <div class="team-row"><span class="flag">🇦🇷</span> Argentina</div>
+                        <div class="team-row"><span class="flag">🇩🇿</span> Algeria</div>
+                        <div class="team-row"><span class="flag">🇦🇹</span> Austria</div>
+                        <div class="team-row"><span class="flag">🇯🇴</span> Jordan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI ASSISTANT PAGE -->
+            <div id="ai-assistant" class="page">
+                <h2 data-i18n="ai_title">🤖 AI Travel Assistant</h2>
+                <p data-i18n="ai_subtitle">Ask me anything about traveling in Mexico for the World Cup!</p>
+
+                <div class="ai-chat-container" id="aiChatContainer">
+                    <div class="ai-msg assistant">
+                        <div class="ai-avatar">🤖</div>
+                        <div class="ai-bubble" id="aiWelcomeMsg">¡Hola! I'm your AI travel assistant for México 2026. I
+                            can help you with:
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>Match schedules & venues</li>
+                                <li>Transportation tips</li>
+                                <li>Restaurant recommendations</li>
+                                <li>Safety advice</li>
+                                <li>Cultural tips & Spanish phrases</li>
+                            </ul>
+                            How can I help you today?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-suggestions">
+                    <button class="suggestion-btn" onclick="askAI(getSuggestion('tacos'))" data-i18n="ai_btn_tacos">🌮
+                        Best tacos?</button>
+                    <button class="suggestion-btn" onclick="askAI(getSuggestion('stadium'))"
+                        data-i18n="ai_btn_stadium">🏟️ Get to stadium</button>
+                    <button class="suggestion-btn" onclick="askAI(getSuggestion('safety'))"
+                        data-i18n="ai_btn_safety">🛡️ Safety tips</button>
+                    <button class="suggestion-btn" onclick="askAI(getSuggestion('spanish'))"
+                        data-i18n="ai_btn_spanish">🗣️ Spanish phrases</button>
+                </div>
+
+                <div class="ai-input-area">
+                    <input type="text" id="aiInput" data-i18n-placeholder="ai_placeholder"
+                        placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendAIMessage()">
+                    <button class="action-btn" onclick="sendAIMessage()" data-i18n="ai_send">Send</button>
+                </div>
+            </div>
+
+            <!-- INFO PAGE -->
+            <div id="info" class="page">
+                <h2 data-i18n="info_title">Important Info</h2>
+                <div class="match-alert">
+                    ⚠️ <span data-i18n="info_matchday_alert">MATCH DAY IN PROGRESS</span>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="info_surroundings_title">🏟️ Stadium Surroundings</h3>
+                    <p data-i18n="info_surroundings_text">Use Gate 4 for International Access. Street closures are in
+                        effect around Estadio Azteca. Please walk from the 'Estadio Azteca' light rail station.</p>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="info_safety_title">🛡️ Safety Zone</h3>
+                    <p data-i18n="info_safety_text">The 'Fan Fest' area in Zócalo is a designated safe zone with
+                        bilingual police assistance available 24/7.</p>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="info_wifi_title">📶 Free WiFi</h3>
+                    <p data-i18n="info_wifi_text">Connect to 'CFE Internet para todos' in public squares and Metro
+                        stations.</p>
+                </div>
+            </div>
+
+            <!-- COUNTRY INFO PAGE -->
+            <div id="country-info" class="page">
+                <h2 data-i18n="country_title">Smart Country Info</h2>
+                <p data-i18n="country_subtitle">Select your home country for tailored advice.</p>
+                <select id="countrySelect" onchange="updateCountryInfo()">
+                    <option value="" disabled selected>Select Country...</option>
+                    <option value="usa">🇺🇸 United States</option>
+                    <option value="spain">🇪🇸 Spain</option>
+                    <option value="brazil">🇧🇷 Brazil</option>
+                    <option value="japan">🇯🇵 Japan</option>
+                    <option value="uk">🇬🇧 United Kingdom</option>
+                    <option value="germany">🇩🇪 Germany</option>
+                    <option value="france">🇫🇷 France</option>
+                    <option value="argentina">🇦🇷 Argentina</option>
+                    <option value="italy">🇮🇹 Italy</option>
+                    <option value="korea">🇰🇷 Korea</option>
+                </select>
+                <div id="countryResult" class="card country-result" style="display:none; margin-top:20px;">
+                    <h3 id="resCountryName">Country Name</h3>
+                    <p><strong>🛂 Visa:</strong> <span id="resVisa">...</span></p>
+                    <p><strong>💵 Tips:</strong> <span id="resTips">...</span></p>
+                    <p><strong>💡 Culture Note:</strong> <span id="resCulture">...</span></p>
+                </div>
+            </div>
+
+            <!-- DINING PAGE -->
+            <div id="dining" class="page">
+                <h2 data-i18n="dining_title">Traditional Dining</h2>
+                <p data-i18n="dining_subtitle">Authentic Mexican Experiences</p>
+
+                <div class="card">
+                    <h3>🍽️ El Cardenal</h3>
+                    <p><strong>Vibe:</strong> Traditional, Historic, Family-style.</p>
+                    <p><strong>Must try:</strong> Breakfast hot chocolate & pan dulce, Escamoles (seasonal).</p>
+                    <p><em>Locations: Centro Histórico (Palma), Lomas, San Ángel.</em></p>
+                    <button class="action-btn"
+                        onclick="alert('Reservations highly recommended for breakfast on weekends.')">Reserve
+                        Table</button>
+                </div>
+
+                <div class="card">
+                    <h3>🍽️ El Bajío</h3>
+                    <p><strong>Vibe:</strong> Colorful, Festive, Authentic flavors.</p>
+                    <p><strong>Must try:</strong> Carnitas (pork), Empanadas de Plátano.</p>
+                    <p><em>Famous for staying true to Veracruz & Central Mexican roots.</em></p>
+                    <button class="action-btn" onclick="alert('Finding nearest El Bajío location...')">Find Near
+                        Me</button>
+                </div>
+
+                <h3 data-i18n="dining_top_picks" style="color: var(--primary); margin-top: 20px;">Top Picks Today</h3>
+                <div class="card">
+                    <h3>🌟 Pujol</h3>
+                    <p>World renowned mole. Reservation required weeks in advance. One of the best restaurants in the
+                        world.</p>
+                </div>
+                <div class="card">
+                    <h3>🌮 Tacos El Califa de León</h3>
+                    <p>Michelin-starred tacos. Simple, perfect, legendary.</p>
+                </div>
+            </div>
+
+            <!-- TRANSPORT PAGE -->
+            <div id="transport" class="page">
+                <h2 data-i18n="transport_title">Public Transport</h2>
+
+                <div class="card">
+                    <h3>🚇 The Metro</h3>
+                    <p><strong>Cost:</strong> 5 MXN (~$0.25 USD)</p>
+                    <p>Fastest way to move around the city. 12 lines covering most areas.</p>
+                    <p>Avoid rush hour (7-9 AM and 6-8 PM).</p>
+                    <small class="warning-text">⚠️ Watch your pockets in crowded cars.</small>
+                </div>
+
+                <div class="card">
+                    <h3>🚌 Metrobús</h3>
+                    <p><strong>Cost:</strong> 6 MXN (~$0.30 USD)</p>
+                    <p>Great for Reforma avenue and Insurgentes. Requires rechargeable "Movilidad" Card (available at
+                        stations).</p>
+                </div>
+
+                <div class="card">
+                    <h3>🚗 Rideshare</h3>
+                    <p>Uber and Didi are widely available and safe. Payment via app.</p>
+                    <p><strong>Tip:</strong> Avoid hailing street taxis unless they are from an official "Sitio" (taxi
+                        stand).</p>
+                </div>
+
+                <div class="card">
+                    <h3>🚃 Light Rail (Tren Ligero)</h3>
+                    <p><strong>Cost:</strong> 3 MXN (~$0.15 USD)</p>
+                    <p>Connects to Estadio Azteca from Tasqueña Metro station. Ideal for match days!</p>
+                </div>
+            </div>
+
+            <!-- EMERGENCY PAGE -->
+            <div id="emergency" class="page">
+                <h2 data-i18n="emergency_title" style="color: #d32f2f;">Emergency Contacts</h2>
+
+                <div class="card emergency-card">
+                    <div class="emergency-number">911</div>
+                    <p style="text-align: center; margin: 0;">Police • Fire • Ambulance</p>
+                </div>
+
+                <div class="card">
+                    <h3>👮 Tourist Police (LOCATEL)</h3>
+                    <p>English-speaking assistance available.</p>
+                    <button class="action-btn" style="background-color: #333;"
+                        onclick="window.location.href='tel:+525555286097'">📞 Call +52 55 5286 7097</button>
+                </div>
+
+                <div class="card">
+                    <h3>🏥 Recommended Hospitals</h3>
+                    <ul>
+                        <li><strong>ABC Medical Center</strong> (Observatorio) - Top private hospital</li>
+                        <li><strong>Hospital Español</strong> - Historic, excellent care</li>
+                        <li><strong>Médica Sur</strong> - Modern facilities</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>💊 Pharmacies (24hr)</h3>
+                    <p>Farmacias del Ahorro and Farmacias Similares have 24-hour locations throughout the city.</p>
+                </div>
+            </div>
+
+            <!-- LEGAL PAGE -->
+            <div id="legal" class="page">
+                <h2 data-i18n="legal_title">Legal & Insurance</h2>
+                <div class="card">
+                    <h3>🛡️ Travel Insurance</h3>
+                    <p>Highly recommended for 2026. Ensure your policy covers:</p>
+                    <ul>
+                        <li><strong>Medical Evacuation</strong></li>
+                        <li>Trip Cancellation</li>
+                        <li>Lost/Stolen belongings</li>
+                    </ul>
+                    <p><em>Recommended providers: Allianz, AXA, World Nomads, SafetyWing.</em></p>
+                </div>
+                <div class="card">
+                    <h3>⚖️ Your Legal Rights</h3>
+                    <p>If detained by police:</p>
+                    <ul>
+                        <li>You have the right to contact your embassy immediately</li>
+                        <li>You have the right to an interpreter</li>
+                        <li>You cannot be held for more than 48 hours without charges</li>
+                    </ul>
+                    <button class="action-btn" onclick="alert('Connecting you with legal assistance network...')">Find a
+                        Lawyer</button>
+                </div>
+            </div>
+
+            <!-- ACTIVITIES/ITINERARIES PAGE -->
+            <div id="activities" class="page">
+                <h2 data-i18n="activities_title">Itineraries & Events</h2>
+                <p>Choose your vibe:</p>
+
+                <select id="itinerarySelect" onchange="showItinerary()">
+                    <option value="" disabled selected>Select Interest...</option>
+                    <option value="fifa">⚽ FIFA World Cup 26™</option>
+                    <option value="history">🏛 History & Culture</option>
+                    <option value="nature">🌳 Nature & Parks</option>
+                    <option value="food">🍽️ Food Tour</option>
+                </select>
+
+                <div id="itineraryResult" style="display:none; margin-top:15px;">
+                    <div id="fifaItinerary" class="itinerary-content" style="display:none;">
+                        <div class="card fifa-card">
+                            <h3>🏆 FIFA World Cup 26™</h3>
+                            <p><strong>Host City:</strong> Mexico City (Estadio Azteca)</p>
+                            <p><strong>Opening Match:</strong> June 11, 2026</p>
+                            <p><strong>Fan Fest:</strong> Zócalo Capitalino</p>
+                            <p><em>Don't miss the historic opening ceremony at the Colossus of Santa Ursula.</em></p>
+                        </div>
+                    </div>
+
+                    <div id="historyItinerary" class="itinerary-content" style="display:none;">
+                        <div class="card">
+                            <h3>Day 1: Aztec Roots</h3>
+                            <p>Morning: Zócalo & Templo Mayor<br>Lunch: Terraza Gran Hotel<br>Afternoon: National Palace
+                                Murals</p>
+                        </div>
+                        <div class="card">
+                            <h3>Day 2: Anthropology</h3>
+                            <p>Morning: National Museum of Anthropology<br>Afternoon: Chapultepec Castle<br>Evening:
+                                Dinner in Condesa</p>
+                        </div>
+                    </div>
+
+                    <div id="natureItinerary" class="itinerary-content" style="display:none;">
+                        <div class="card">
+                            <h3>Day 1: Urban Oasis</h3>
+                            <p>Morning: Chapultepec Forest (2nd section)<br>Afternoon: Viveros de Coyoacán<br>Evening:
+                                Floating gardens of Xochimilco</p>
+                        </div>
+                        <div class="card">
+                            <h3>Day 2: Volcanic Adventure</h3>
+                            <p>Day trip to Ajusco or Desierto de los Leones national parks.</p>
+                        </div>
+                    </div>
+
+                    <div id="foodItinerary" class="itinerary-content" style="display:none;">
+                        <div class="card">
+                            <h3>Morning: Street Food Safari</h3>
+                            <p>Mercado de la Merced → Tacos de canasta → Fresh jugos</p>
+                        </div>
+                        <div class="card">
+                            <h3>Afternoon: Roma-Condesa Crawl</h3>
+                            <p>Café culture → Rosetta bakery → Mezcal tasting</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRICES PAGE -->
+            <div id="prices" class="page">
+                <h2 data-i18n="prices_title">2026 Price Guide (USD)</h2>
+                <div class="card">
+                    <table>
+                        <tr>
+                            <th>Item</th>
+                            <th>Budget</th>
+                            <th>Luxury</th>
+                        </tr>
+                        <tr>
+                            <td>Hotel (Night)</td>
+                            <td>$30-60</td>
+                            <td>$350+</td>
+                        </tr>
+                        <tr>
+                            <td>Tacos (Meal)</td>
+                            <td>$5-10</td>
+                            <td>$50+</td>
+                        </tr>
+                        <tr>
+                            <td>Beer</td>
+                            <td>$2-3</td>
+                            <td>$8+</td>
+                        </tr>
+                        <tr>
+                            <td>Coffee</td>
+                            <td>$2</td>
+                            <td>$5</td>
+                        </tr>
+                        <tr>
+                            <td>Metro Ride</td>
+                            <td>$0.25</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Uber (5km)</td>
+                            <td>$3-5</td>
+                            <td>$8-12</td>
+                        </tr>
+                    </table>
+                    <p style="font-size: 0.8rem; margin-top: 15px; color: #666;">*Estimates based on 2026 inflation
+                        projections. Prices during World Cup may be higher.</p>
+                </div>
+
+                <div class="card">
+                    <h3>💱 Currency Tips</h3>
+                    <p>Mexican Peso (MXN). Cards widely accepted. ATMs available everywhere. Tip: Use ATMs inside banks
+                        for safety.</p>
+                </div>
+            </div>
+
+            <!-- CHAT PAGE -->
+            <div id="chat" class="page">
+                <h2 data-i18n="chat_title">Community Chat</h2>
+                <div class="chat-container" id="chatContainer">
+                    <div class="msg other"><strong>Sarah_UK:</strong> Has anyone tried the Churros at El Moro? 🍩</div>
+                    <div class="msg other"><strong>Mod_Mx26:</strong> Yes! The line moves fast. Highly recommended. Open
+                        24hrs!</div>
+                    <div class="msg me">I'm heading there now!</div>
+                    <div class="msg other"><strong>Carlos_Brazil:</strong> Anyone going to the match tomorrow? 🇧🇷⚽
+                    </div>
+                    <div class="msg other"><strong>Kenji_JP:</strong> Looking for sushi recommendations if anyone knows
+                        good spots 🍣</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Type a message..."
+                        onkeypress="if(event.key==='Enter')sendMessage()">
+                    <button class="action-btn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-bar"></div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        const translations = {
+            en: {
+                welcome: "¡Hola! Welcome.",
+                subtitle: "Your smart assistant for the 2026 season. Tap a category below to begin your journey.",
+                menu_lost_phone: "Lost Phone", menu_lost_passport: "Lost Passport", menu_groups: "WC Groups", menu_ai: "AI Assistant",
+                menu_embassies: "Embassies", menu_country: "My Country Info", menu_info: "Info & Match Day", menu_dining: "Dining Guide",
+                menu_transport: "Transport", menu_emergency: "Emergency", menu_legal: "Legal & Insurance", menu_itineraries: "Itineraries",
+                menu_prices: "Price Guide", menu_chat: "Community Chat",
+                embassy_title: "Embassy Directory", embassy_subtitle: "Mission contacts in CDMX.",
+                lost_phone_title: "📱 Lost Your Phone?", lost_phone_subtitle: "Don't panic! Follow these steps.",
+                phone_step1_title: "🚨 Step 1: Immediate Actions", phone_step1_time: "Within the first hour:",
+                phone_step1_1: "Use another device to call your phone", phone_step1_2: "Check 'Find My Device'",
+                phone_step1_3: "Lock your phone remotely", phone_step1_4: "Enable 'Lost Mode'",
+                phone_step2_title: "🔒 Step 2: Secure Accounts", phone_step2_1: "Change passwords", phone_step2_2: "Log out remotely",
+                phone_step2_3: "Notify bank", phone_step2_4: "Disable mobile payments",
+                phone_step3_title: "📞 Step 3: Report & Block", phone_step3_carrier: "Contact your carrier to:",
+                phone_step3_1: "Block SIM card", phone_step3_2: "Report IMEI", phone_step3_3: "Request replacement SIM",
+                phone_carriers: "Mexican carriers:",
+                phone_step4_title: "👮 Step 4: Police Report", phone_step4_text: "Go to 'Ministerio Público'. Need:",
+                phone_step4_1: "Passport/ID", phone_step4_2: "Phone details", phone_step4_3: "Location/Time",
+                phone_contact_police: "📞 Contact Tourist Police",
+                lost_passport_title: "🛂 Lost Your Passport?", lost_passport_subtitle: "Stay calm. Follow these steps.",
+                passport_first_step: "⚠️ Important First Step", passport_contact_embassy: "Contact your embassy IMMEDIATELY",
+                passport_go_embassy: "🏛 Go to Embassy Directory",
+                passport_step1_title: "📋 Step 1: Police Report", passport_step1_text: "Get 'Acta de Extravío' from Ministerio Público.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "Bring ID", passport_step1_3: "Get certified copy",
+                passport_step1_note: "Required by embassy.",
+                passport_step2_title: "🏛 Step 2: Visit Embassy", passport_step2_bring: "Bring with you:",
+                passport_step2_1: "Police report", passport_step2_2: "2 photos", passport_step2_3: "ID",
+                passport_step2_4: "Proof of citizenship", passport_step2_5: "Itinerary",
+                passport_step3_title: "📄 Step 3: Travel Doc", passport_step3_text: "Embassy issues:",
+                passport_step3_1: "Emergency Passport", passport_step3_2: "Emergency Travel Document",
+                passport_processing: "Processing: 1-3 days", passport_cost: "Cost: ~$100-200",
+                passport_step4_title: "✈️ Step 4: Exit Req.", passport_step4_text: "To leave Mexico:",
+                passport_step4_1: "Travel document", passport_step4_2: "Police report", passport_step4_3: "FMM Copy",
+                passport_step4_note: "Allow extra time at airport.",
+                passport_tips_title: "💡 Prevention Tips", passport_tip1: "Keep digital copies", passport_tip2: "Carry photocopy",
+                passport_tip3: "Use hotel safe", passport_tip4: "Register with embassy",
+                groups_title: "🏆 WC 2026 Groups", groups_subtitle: "Tournament Groups",
+                ai_title: "🤖 AI Assistant", ai_subtitle: "Ask me anything!", ai_send: "Send",
+                ai_btn_tacos: "🌮 Best tacos?", ai_btn_stadium: "🏟️ Stadium info", ai_btn_safety: "🛡️ Safety", ai_btn_spanish: "🗣️ Spanish",
+                ai_placeholder: "Ask me anything...",
+                info_title: "Important Info", info_matchday_alert: "MATCH DAY IN PROGRESS",
+                info_surroundings_title: "🏟️ Stadium Surroundings", info_surroundings_text: "Gate 4 for Int'l Access. Walk from light rail.",
+                info_safety_title: "🛡️ Safety Zone", info_safety_text: "Fan Fest in Zócalo is safe zone.",
+                info_wifi_title: "📶 Free WiFi", info_wifi_text: "Connect to 'CFE Internet para todos'.",
+                country_title: "Smart Country Info", country_subtitle: "Select home country.",
+                dining_title: "Traditional Dining", dining_subtitle: "Authentic Experiences", dining_top_picks: "Top Picks Today",
+                transport_title: "Public Transport", emergency_title: "Emergency Contacts", legal_title: "Legal & Insurance",
+                activities_title: "Itineraries", prices_title: "Price Guide (USD)", chat_title: "Community Chat"
+            },
+            es: {
+                welcome: "¡Hola! Bienvenido.",
+                subtitle: "Tu asistente inteligente para la temporada 2026. Toca una categoría para comenzar.",
+                menu_lost_phone: "Perdí mi Celular", menu_lost_passport: "Perdí mi Pasaporte", menu_groups: "Grupos Mundial", menu_ai: "Asistente IA",
+                menu_embassies: "Embajadas", menu_country: "Info Mi País", menu_info: "Info y Partido", menu_dining: "Guía de Comida",
+                menu_transport: "Transporte", menu_emergency: "Emergencia", menu_legal: "Legal y Seguros", menu_itineraries: "Itinerarios",
+                menu_prices: "Guía de Precios", menu_chat: "Chat Comunidad",
+                embassy_title: "Directorio de Embajadas", embassy_subtitle: "Contactos diplomáticos en CDMX.",
+                lost_phone_title: "📱 ¿Perdiste tu Celular?", lost_phone_subtitle: "¡No entres en pánico! Sigue estos pasos.",
+                phone_step1_title: "🚨 Paso 1: Acciones Inmediatas", phone_step1_time: "En la primera hora:",
+                phone_step1_1: "Llama a tu teléfono", phone_step1_2: "Usa 'Encontrar mi dispositivo'",
+                phone_step1_3: "Bloquéalo remotamente", phone_step1_4: "Activa 'Modo Perdido'",
+                phone_step2_title: "🔒 Paso 2: Asegura tus Cuentas", phone_step2_1: "Cambia contraseñas", phone_step2_2: "Cierra sesiones",
+                phone_step2_3: "Avisa al banco", phone_step2_4: "Desactiva pagos móviles",
+                phone_step3_title: "📞 Paso 3: Reporta y Bloquea", phone_step3_carrier: "Contacta a tu operador:",
+                phone_step3_1: "Bloquear chip/SIM", phone_step3_2: "Reportar IMEI", phone_step3_3: "Pedir reposición",
+                phone_carriers: "Operadores mexicanos:",
+                phone_step4_title: "👮 Paso 4: Denuncia", phone_step4_text: "Ve al Ministerio Público. Necesitas:",
+                phone_step4_1: "Pasaporte/ID", phone_step4_2: "Detalles del tel.", phone_step4_3: "Hora/Lugar",
+                phone_contact_police: "📞 Policía Turística",
+                lost_passport_title: "🛂 ¿Perdiste tu Pasaporte?", lost_passport_subtitle: "Mantén la calma. Sigue estos pasos.",
+                passport_first_step: "⚠️ Primer Paso Importante", passport_contact_embassy: "Contacta a tu embajada INMEDIATAMENTE",
+                passport_go_embassy: "🏛 Ir a Embajadas",
+                passport_step1_title: "📋 Paso 1: Reporte Policial", passport_step1_text: "Obtén 'Acta de Extravío' del MP.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "Lleva ID", passport_step1_3: "Copia certificada",
+                passport_step1_note: "Requerido por la embajada.",
+                passport_step2_title: "🏛 Paso 2: Visita Embajada", passport_step2_bring: "Lleva contigo:",
+                passport_step2_1: "Acta de Extravío", passport_step2_2: "2 fotos", passport_step2_3: "ID",
+                passport_step2_4: "Prueba ciudadanía", passport_step2_5: "Itinerario",
+                passport_step3_title: "📄 Paso 3: Doc. de Viaje", passport_step3_text: "La embajada emite:",
+                passport_step3_1: "Pasaporte Emergencia", passport_step3_2: "Salvoconducto",
+                passport_processing: "Proceso: 1-3 días", passport_cost: "Costo: ~$100-200 USD",
+                passport_step4_title: "✈️ Paso 4: Req. Salida", passport_step4_text: "Para salir de México:",
+                passport_step4_1: "Documento de viaje", passport_step4_2: "Reporte policial", passport_step4_3: "Copia FMM",
+                passport_step4_note: "Llega con tiempo extra al aeropuerto.",
+                passport_tips_title: "💡 Tips Prevención", passport_tip1: "Copias digitales", passport_tip2: "Copia física",
+                passport_tip3: "Usa caja fuerte", passport_tip4: "Regístrate en embajada",
+                groups_title: "🏆 Grupos Mundial 2026", groups_subtitle: "Grupos del Torneo",
+                ai_title: "🤖 Asistente IA", ai_subtitle: "¡Pregúntame lo que sea!", ai_send: "Enviar",
+                ai_btn_tacos: "🌮 Mejores tacos", ai_btn_stadium: "🏟️ Estadio", ai_btn_safety: "🛡️ Seguridad", ai_btn_spanish: "🗣️ Frases",
+                ai_placeholder: "Escribe tu pregunta...",
+                info_title: "Información Importante", info_matchday_alert: "DÍA DE PARTIDO",
+                info_surroundings_title: "🏟️ Alrededores Estadio", info_surroundings_text: "Puerta 4 Acceso Int'l. Usa Tren Ligero.",
+                info_safety_title: "🛡️ Zona Segura", info_safety_text: "Fan Fest en Zócalo es zona segura.",
+                info_wifi_title: "📶 WiFi Gratis", info_wifi_text: "Conéctate a 'CFE Internet para todos'.",
+                country_title: "Info Inteligente", country_subtitle: "Selecciona tu país.",
+                dining_title: "Comida Tradicional", dining_subtitle: "Experiencias Auténticas", dining_top_picks: "Recomendados Hoy",
+                transport_title: "Transporte Público", emergency_title: "Contactos Emergencia", legal_title: "Legal y Seguros",
+                activities_title: "Itinerarios", prices_title: "Guía de Precios", chat_title: "Chat Comunidad"
+            },
+            /* OTHER LANGUAGES TO BE ADDED */
+            pt: {
+                welcome: "Olá! Bem-vindo.",
+                subtitle: "Seu assistente inteligente para a temporada 2026. Toque em uma categoria para começar.",
+                menu_lost_phone: "Perdi meu Celular", menu_lost_passport: "Perdi meu Passaporte", menu_groups: "Grupos da Copa", menu_ai: "Assistente IA",
+                menu_embassies: "Embaixadas", menu_country: "Info do País", menu_info: "Info e Jogo", menu_dining: "Guia Gastronômico",
+                menu_transport: "Transporte", menu_emergency: "Emergência", menu_legal: "Legal e Seguros", menu_itineraries: "Itinerários",
+                menu_prices: "Guia de Preços", menu_chat: "Chat da Comunidade",
+                embassy_title: "Diretório de Embaixadas", embassy_subtitle: "Contatos diplomáticos na CDMX.",
+                lost_phone_title: "📱 Perdeu o Celular?", lost_phone_subtitle: "Não entre em pânico! Siga estes passos.",
+                phone_step1_title: "🚨 Passo 1: Ações Imediatas", phone_step1_time: "Na primeira hora:",
+                phone_step1_1: "Ligue para seu número", phone_step1_2: "Use 'Encontrar meu dispositivo'",
+                phone_step1_3: "Bloqueie remotamente", phone_step1_4: "Ative o 'Modo Perdido'",
+                phone_step2_title: "🔒 Passo 2: Proteja Contas", phone_step2_1: "Mude senhas", phone_step2_2: "Sair de sessões",
+                phone_step2_3: "Avise o banco", phone_step2_4: "Desative pagamentos móveis",
+                phone_step3_title: "📞 Passo 3: Reporte", phone_step3_carrier: "Contate sua operadora:",
+                phone_step3_1: "Bloquear chip/SIM", phone_step3_2: "Reportar IMEI", phone_step3_3: "Pedir reposição",
+                phone_carriers: "Operadoras mexicanas:",
+                phone_step4_title: "👮 Passo 4: Boletim de Ocorrência", phone_step4_text: "Vá ao Ministério Público. Leve:",
+                phone_step4_1: "Passaporte/RG", phone_step4_2: "Detalhes do tel.", phone_step4_3: "Local/Hora",
+                phone_contact_police: "📞 Polícia Turística",
+                lost_passport_title: "🛂 Perdeu o Passaporte?", lost_passport_subtitle: "Mantenha a calma. Siga estes passos.",
+                passport_first_step: "⚠️ Primeiro Passo Importante", passport_contact_embassy: "Contate sua embaixada IMEDIATAMENTE",
+                passport_go_embassy: "🏛 Ir para Embaixadas",
+                passport_step1_title: "📋 Passo 1: Boletim Policial", passport_step1_text: "Obtenha 'Acta de Extravío' no MP.",
+                passport_step1_1: "Ministério Público", passport_step1_2: "Leve ID", passport_step1_3: "Cópia autenticada",
+                passport_step1_note: "Exigido pela embaixada.",
+                passport_step2_title: "🏛 Passo 2: Visite a Embaixada", passport_step2_bring: "Leve com você:",
+                passport_step2_1: "Boletim Policial", passport_step2_2: "2 fotos", passport_step2_3: "ID",
+                passport_step2_4: "Prova de cidadania", passport_step2_5: "Itinerário",
+                passport_step3_title: "📄 Passo 3: Doc. de Viagem", passport_step3_text: "A embaixada emite:",
+                passport_step3_1: "Passaporte de Emergência", passport_step3_2: "Documento de Viagem",
+                passport_processing: "Processo: 1-3 dias", passport_cost: "Custo: ~$100-200 USD",
+                passport_step4_title: "✈️ Passo 4: Saída", passport_step4_text: "Para sair do México:",
+                passport_step4_1: "Documento de viagem", passport_step4_2: "Boletim policial", passport_step4_3: "Cópia FMM",
+                passport_step4_note: "Chegue com antecedência ao aeroporto.",
+                passport_tips_title: "💡 Dicas de Prevenção", passport_tip1: "Cópias digitais", passport_tip2: "Leve fotocópia",
+                passport_tip3: "Use o cofre", passport_tip4: "Registre-se na embaixada",
+                groups_title: "🏆 Grupos Copa 2026", groups_subtitle: "Grupos do Torneio",
+                ai_title: "🤖 Assistente IA", ai_subtitle: "Pergunte qualquer coisa!", ai_send: "Enviar",
+                ai_btn_tacos: "🌮 Melhores tacos", ai_btn_stadium: "🏟️ Estádio", ai_btn_safety: "🛡️ Segurança", ai_btn_spanish: "🗣️ Frases",
+                ai_placeholder: "Digite sua pergunta...",
+                info_title: "Informações Importantes", info_matchday_alert: "DIA DE JOGO",
+                info_surroundings_title: "🏟️ Arredores do Estádio", info_surroundings_text: "Portão 4, Acesso Int'l. Use Trens Leves.",
+                info_safety_title: "🛡️ Zona Segura", info_safety_text: "Fan Fest no Zócalo é zona segura.",
+                info_wifi_title: "📶 WiFi Grátis", info_wifi_text: "Conecte-se a 'CFE Internet para todos'.",
+                country_title: "Info Inteligente", country_subtitle: "Selecione seu país.",
+                dining_title: "Jantar Tradicional", dining_subtitle: "Experiências Autênticas", dining_top_picks: "Escolhas de Hoje",
+                transport_title: "Transporte Público", emergency_title: "Contatos de Emergência", legal_title: "Legal e Seguros",
+                activities_title: "Itinerarios", prices_title: "Guía de Preços", chat_title: "Chat da Comunidade"
+            },
+            fr: {
+                welcome: "Bonjour! Bienvenue.",
+                subtitle: "Votre assistant intelligent pour la saison 2026. Appuyez sur une catégorie pour commencer.",
+                menu_lost_phone: "Téléphone Perdu", menu_lost_passport: "Passeport Perdu", menu_groups: "Groupes CM", menu_ai: "Assistant IA",
+                menu_embassies: "Ambassades", menu_country: "Info Pays", menu_info: "Infos & Match", menu_dining: "Guide Resto",
+                menu_transport: "Transports", menu_emergency: "Urgence", menu_legal: "Légal & Assurances", menu_itineraries: "Itinéraires",
+                menu_prices: "Guide des Prix", menu_chat: "Chat Communauté",
+                embassy_title: "Annuaire des Ambassades", embassy_subtitle: "Contacts diplomatiques à CDMX.",
+                lost_phone_title: "📱 Téléphone Perdu?", lost_phone_subtitle: "Pas de panique! Suivez ces étapes.",
+                phone_step1_title: "🚨 Étape 1: Actions Immédiates", phone_step1_time: "Dans la première heure:",
+                phone_step1_1: "Appelez votre numéro", phone_step1_2: "Utilisez 'Localiser mon appareil'",
+                phone_step1_3: "Verrouillez à distance", phone_step1_4: "Activez le 'Mode Perdu'",
+                phone_step2_title: "🔒 Étape 2: Sécuriser vos comptes", phone_step2_1: "Changez vos mots de passe", phone_step2_2: "Déconnexion à distance",
+                phone_step2_3: "Prévenez votre banque", phone_step2_4: "Désactivez paiements mobiles",
+                phone_step3_title: "📞 Étape 3: Signaler & Bloquer", phone_step3_carrier: "Contactez votre opérateur:",
+                phone_step3_1: "Bloquer la carte SIM", phone_step3_2: "Signaler l'IMEI", phone_step3_3: "Demander remplacement",
+                phone_carriers: "Opérateurs mexicains:",
+                phone_step4_title: "👮 Étape 4: Rapport de Police", phone_step4_text: "Allez au 'Ministerio Público'. Apportez:",
+                phone_step4_1: "Passeport/ID", phone_step4_2: "Détails du tél.", phone_step4_3: "Lieu/Heure",
+                phone_contact_police: "📞 Police Touristique",
+                lost_passport_title: "🛂 Passeport Perdu?", lost_passport_subtitle: "Restez calme. Suivez ces étapes.",
+                passport_first_step: "⚠️ Première Étape Importante", passport_contact_embassy: "Contactez votre ambassade IMMÉDIATEMENT",
+                passport_go_embassy: "🏛 Voir Ambassades",
+                passport_step1_title: "📋 Étape 1: Rapport de Police", passport_step1_text: "Obtenez 'Acta de Extravío' au MP.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "Apportez une ID", passport_step1_3: "Copie certifiée",
+                passport_step1_note: "Requis par l'ambassade.",
+                passport_step2_title: "🏛 Étape 2: Visite Ambassade", passport_step2_bring: "Apportez:",
+                passport_step2_1: "Rapport de police", passport_step2_2: "2 photos", passport_step2_3: "ID",
+                passport_step2_4: "Preuve nationalité", passport_step2_5: "Itinéraire",
+                passport_step3_title: "📄 Étape 3: Doc. de Voyage", passport_step3_text: "L'ambassade émet:",
+                passport_step3_1: "Passeport d'urgence", passport_step3_2: "Laissez-passer",
+                passport_processing: "Délai: 1-3 jours", passport_cost: "Coût: ~$100-200 USD",
+                passport_step4_title: "✈️ Étape 4: Sortie", passport_step4_text: "Pour quitter le Mexique:",
+                passport_step4_1: "Document de voyage", passport_step4_2: "Rapport police", passport_step4_3: "Copie FMM",
+                passport_step4_note: "Prévoyez du temps à l'aéroport.",
+                passport_tips_title: "💡 Prévention", passport_tip1: "Copies numériques", passport_tip2: "Copie papier",
+                passport_tip3: "Utilisez le coffre", passport_tip4: "Inscrivez-vous ambassade",
+                groups_title: "🏆 Groupes CM 2026", groups_subtitle: "Groupes du Tournoi",
+                ai_title: "🤖 Assistant IA", ai_subtitle: "Posez vos questions!", ai_send: "Envoyer",
+                ai_btn_tacos: "🌮 Meilleurs tacos", ai_btn_stadium: "🏟️ Stade", ai_btn_safety: "🛡️ Sécurité", ai_btn_spanish: "🗣️ Phrases",
+                ai_placeholder: "Posez votre question...",
+                info_title: "Infos Importantes", info_matchday_alert: "JOUR DE MATCH",
+                info_surroundings_title: "🏟️ Alentours Stade", info_surroundings_text: "Porte 4 Accès Int'l. Utilisez le train léger.",
+                info_safety_title: "🛡️ Zone Sûre", info_safety_text: "Fan Fest Zócalo est sécurisé.",
+                info_wifi_title: "📶 WiFi Gratuit", info_wifi_text: "Connectez 'CFE Internet para todos'.",
+                country_title: "Info Pays", country_subtitle: "Sélectionnez votre pays.",
+                dining_title: "Repas Traditionnel", dining_subtitle: "Expériences Authentiques", dining_top_picks: "Sélection du Jour",
+                transport_title: "Transports en Commun", emergency_title: "Contacts Urgence", legal_title: "Légal & Assurances",
+                activities_title: "Itinéraires", prices_title: "Guide des Prix (USD)", chat_title: "Chat Communauté"
+            },
+            /* OTHER LANGUAGES TO BE ADDED */
+            de: {
+                welcome: "Hallo! Willkommen.",
+                subtitle: "Ihr smarter Assistent für die Saison 2026. Tippen Sie auf eine Kategorie, um zu beginnen.",
+                menu_lost_phone: "Handy verloren", menu_lost_passport: "Reisepass verloren", menu_groups: "WM-Gruppen", menu_ai: "KI-Assistent",
+                menu_embassies: "Botschaften", menu_country: "Länderinfo", menu_info: "Infos & Spieltag", menu_dining: "Gastro-Guide",
+                menu_transport: "Verkehrsmittel", menu_emergency: "Notfall", menu_legal: "Recht & Versicherung", menu_itineraries: "Reiserouten",
+                menu_prices: "Preisguide", menu_chat: "Community-Chat",
+                embassy_title: "Botschaftsverzeichnis", embassy_subtitle: "Diplomatische Kontakte in CDMX.",
+                lost_phone_title: "📱 Handy verloren?", lost_phone_subtitle: "Keine Panik! Folgen Sie diesen Schritten.",
+                phone_step1_title: "🚨 Schritt 1: Sofortmaßnahmen", phone_step1_time: "Innerhalb der ersten Stunde:",
+                phone_step1_1: "Rufen Sie Ihr Handy an", phone_step1_2: "Nutzen Sie 'Mein Gerät finden'",
+                phone_step1_3: "Fernsperrung aktivieren", phone_step1_4: "'Verloren-Modus' aktivieren",
+                phone_step2_title: "🔒 Schritt 2: Konten sichern", phone_step2_1: "Passwörter ändern", phone_step2_2: "Sitzungen beenden",
+                phone_step2_3: "Bank informieren", phone_step2_4: "Mobiles Bezahlen deaktivieren",
+                phone_step3_title: "📞 Schritt 3: Melden & Sperren", phone_step3_carrier: "Netzbetreiber kontaktieren:",
+                phone_step3_1: "SIM-Karte sperren", phone_step3_2: "IMEI melden", phone_step3_3: "Ersatz-SIM anfordern",
+                phone_carriers: "Mexikanische Anbieter:",
+                phone_step4_title: "👮 Schritt 4: Polizeibericht", phone_step4_text: "Gehen Sie zum 'Ministerio Público'. Mitbringen:",
+                phone_step4_1: "Reisepass/Ausweis", phone_step4_2: "Handy-Details", phone_step4_3: "Ort/Zeit",
+                phone_contact_police: "📞 Touristenpolizei",
+                lost_passport_title: "🛂 Reisepass verloren?", lost_passport_subtitle: "Bleiben Sie ruhig. Folgen Sie diesen Schritten.",
+                passport_first_step: "⚠️ Wichtiger erster Schritt", passport_contact_embassy: "Kontaktieren Sie SOFORT Ihre Botschaft",
+                passport_go_embassy: "🏛 Zu den Botschaften",
+                passport_step1_title: "📋 Schritt 1: Polizeibericht", passport_step1_text: "Holen Sie 'Acta de Extravío' beim MP.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "Ausweis mitbringen", passport_step1_3: "Beglaubigte Kopie",
+                passport_step1_note: "Von der Botschaft benötigt.",
+                passport_step2_title: "🏛 Schritt 2: Botschaftsbesuch", passport_step2_bring: "Mitbringen:",
+                passport_step2_1: "Polizeibericht", passport_step2_2: "2 Fotos", passport_step2_3: "Ausweis",
+                passport_step2_4: "Staatsbürgerschaftsnachweis", passport_step2_5: "Reiseplan",
+                passport_step3_title: "📄 Schritt 3: Reisedokument", passport_step3_text: "Botschaft stellt aus:",
+                passport_step3_1: "Notpass", passport_step3_2: "Reiseausweis",
+                passport_processing: "Dauer: 1-3 Tage", passport_cost: "Kosten: ~$100-200 USD",
+                passport_step4_title: "✈️ Schritt 4: Ausreise", passport_step4_text: "Um Mexiko zu verlassen:",
+                passport_step4_1: "Reisedokument", passport_step4_2: "Polizeibericht", passport_step4_3: "FMM-Kopie",
+                passport_step4_note: "Planen Sie Zeit am Flughafen ein.",
+                passport_tips_title: "💡 Präventionstipps", passport_tip1: "Digitale Kopien", passport_tip2: "Fotokopie mitführen",
+                passport_tip3: "Hotelsafe nutzen", passport_tip4: "Bei Botschaft registrieren",
+                groups_title: "🏆 WM-Gruppen 2026", groups_subtitle: "Turniergruppen",
+                ai_title: "🤖 KI-Assistent", ai_subtitle: "Fragen Sie mich alles!", ai_send: "Senden",
+                ai_btn_tacos: "🌮 Beste Tacos", ai_btn_stadium: "🏟️ Stadion", ai_btn_safety: "🛡️ Sicherheit", ai_btn_spanish: "🗣️ Sätze",
+                ai_placeholder: "Stellen Sie Ihre Frage...",
+                info_title: "Wichtige Infos", info_matchday_alert: "SPIELTAG LÄUFT",
+                info_surroundings_title: "🏟️ Stadionumgebung", info_surroundings_text: "Tor 4 für internat. Zugang. Nutzen Sie die Stadtbahn.",
+                info_safety_title: "🛡️ Sicherheitszone", info_safety_text: "Fan Fest im Zócalo ist sicher.",
+                info_wifi_title: "📶 Gratis WiFi", info_wifi_text: "Verbinden mit 'CFE Internet para todos'.",
+                country_title: "Länderinfo", country_subtitle: "Wählen Sie Ihr Land.",
+                dining_title: "Traditionelles Essen", dining_subtitle: "Authentische Erlebnisse", dining_top_picks: "Top-Tipps heute",
+                transport_title: "Öffentliche Verkehrsmittel", emergency_title: "Notfallkontakte", legal_title: "Recht & Versicherung",
+                activities_title: "Reiserouten", prices_title: "Preisguide (USD)", chat_title: "Community-Chat"
+            },
+            it: {
+                welcome: "Ciao! Benvenuto.",
+                subtitle: "Il tuo assistente intelligente per la stagione 2026. Tocca una categoria per iniziare.",
+                menu_lost_phone: "Telefono Perso", menu_lost_passport: "Passaporto Perso", menu_groups: "Gruppi Mondiali", menu_ai: "Assistente IA",
+                menu_embassies: "Ambasciate", menu_country: "Info Paese", menu_info: "Info & Partita", menu_dining: "Guida Ristoranti",
+                menu_transport: "Trasporti", menu_emergency: "Emergenza", menu_legal: "Legale & Assicurazione", menu_itineraries: "Itinerari",
+                menu_prices: "Guida Prezzi", menu_chat: "Chat Community",
+                embassy_title: "Elenco Ambasciate", embassy_subtitle: "Contatti diplomatici a CDMX.",
+                lost_phone_title: "📱 Telefono Perso?", lost_phone_subtitle: "Niente panico! Segui questi passi.",
+                phone_step1_title: "🚨 Passo 1: Azioni Immediate", phone_step1_time: "Entro la prima ora:",
+                phone_step1_1: "Chiama il tuo numero", phone_step1_2: "Usa 'Trova il mio dispositivo'",
+                phone_step1_3: "Blocca da remoto", phone_step1_4: "Attiva 'Modalità Smarrito'",
+                phone_step2_title: "🔒 Passo 2: Proteggi Account", phone_step2_1: "Cambia password", phone_step2_2: "Disconnetti sessioni",
+                phone_step2_3: "Avvisa la banca", phone_step2_4: "Disattiva pagamenti mobili",
+                phone_step3_title: "📞 Passo 3: Segnala & Blocca", phone_step3_carrier: "Contatta operatore:",
+                phone_step3_1: "Blocca SIM", phone_step3_2: "Segnala IMEI", phone_step3_3: "Richiedi nuova SIM",
+                phone_carriers: "Operatori messicani:",
+                phone_step4_title: "👮 Passo 4: Denuncia", phone_step4_text: "Vai al 'Ministerio Público'. Porta:",
+                phone_step4_1: "Passaporto/ID", phone_step4_2: "Dettagli telefono", phone_step4_3: "Luogo/Ora",
+                phone_contact_police: "📞 Polizia Turistica",
+                lost_passport_title: "🛂 Passaporto Perso?", lost_passport_subtitle: "Stai calmo. Segui questi passi.",
+                passport_first_step: "⚠️ Primo Passo Importante", passport_contact_embassy: "Contatta SUBITO l'ambasciata",
+                passport_go_embassy: "🏛 Vai alle Ambasciate",
+                passport_step1_title: "📋 Passo 1: Denuncia Polizia", passport_step1_text: "Ottieni 'Acta de Extravío' al MP.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "Porta un documento", passport_step1_3: "Copia certificata",
+                passport_step1_note: "Richiesto dall'ambasciata.",
+                passport_step2_title: "🏛 Passo 2: Visita Ambasciata", passport_step2_bring: "Porta con te:",
+                passport_step2_1: "Denuncia polizia", passport_step2_2: "2 foto", passport_step2_3: "Documento ID",
+                passport_step2_4: "Prova cittadinanza", passport_step2_5: "Itinerario",
+                passport_step3_title: "📄 Passo 3: Doc. Viaggio", passport_step3_text: "L'ambasciata rilascia:",
+                passport_step3_1: "Passaporto Emergenza", passport_step3_2: "Documento di Viaggio",
+                passport_processing: "Tempo: 1-3 giorni", passport_cost: "Costo: ~$100-200 USD",
+                passport_step4_title: "✈️ Passo 4: Uscita", passport_step4_text: "Per lasciare il Messico:",
+                passport_step4_1: "Documento viaggio", passport_step4_2: "Denuncia polizia", passport_step4_3: "Copia FMM",
+                passport_step4_note: "Arriva presto in aeroporto.",
+                passport_tips_title: "💡 Prevenzione", passport_tip1: "Copie digitali", passport_tip2: "Porta fotocopia",
+                passport_tip3: "Usa cassaforte", passport_tip4: "Registrati in ambasciata",
+                groups_title: "🏆 Gruppi Mondiali 2026", groups_subtitle: "Gruppi del Torneo",
+                ai_title: "🤖 Assistente IA", ai_subtitle: "Chiedimi tutto!", ai_send: "Invia",
+                ai_btn_tacos: "🌮 Migliori tacos", ai_btn_stadium: "🏟️ Stadio", ai_btn_safety: "🛡️ Sicurezza", ai_btn_spanish: "🗣️ Frasi",
+                ai_placeholder: "Fai una domanda...",
+                info_title: "Info Importanti", info_matchday_alert: "PARTITA IN CORSO",
+                info_surroundings_title: "🏟️ Dintorni Stadio", info_surroundings_text: "Cancello 4 Accesso Int. Usa Tren Ligero.",
+                info_safety_title: "🛡️ Zona Sicura", info_safety_text: "Fan Fest in Zócalo è zona sicura.",
+                info_wifi_title: "📶 WiFi Gratis", info_wifi_text: "Connettiti a 'CFE Internet para todos'.",
+                country_title: "Info Paese", country_subtitle: "Seleziona il tuo paese.",
+                dining_title: "Cena Tradizionale", dining_subtitle: "Esperienze Autentiche", dining_top_picks: "Scelte di Oggi",
+                transport_title: "Trasporti Pubblici", emergency_title: "Contatti Emergenza", legal_title: "Legale & Assicurazione",
+                activities_title: "Itinerari", prices_title: "Guida Prezzi (USD)", chat_title: "Chat Community"
+            },
+            /* OTHER LANGUAGES TO BE ADDED */
+            zh: {
+                welcome: "你好！欢迎。",
+                subtitle: "您的2026赛季智能助手。点击下方类别开始。",
+                menu_lost_phone: "手机丢失", menu_lost_passport: "护照丢失", menu_groups: "世界杯小组", menu_ai: "AI助手",
+                menu_embassies: "大使馆", menu_country: "我的国家信息", menu_info: "信息与比赛日", menu_dining: "餐饮指南",
+                menu_transport: "交通", menu_emergency: "紧急情况", menu_legal: "法律与保险", menu_itineraries: "行程",
+                menu_prices: "价格指南", menu_chat: "社区聊天",
+                embassy_title: "大使馆目录", embassy_subtitle: "墨西哥城外交联系方式。",
+                lost_phone_title: "📱 手机丢了？", lost_phone_subtitle: "别惊慌！按照这些步骤操作。",
+                phone_step1_title: "🚨 第一步：立即行动", phone_step1_time: "一小时内：",
+                phone_step1_1: "拨打您的电话", phone_step1_2: "使用“查找我的设备”",
+                phone_step1_3: "远程锁定", phone_step1_4: "启用“丢失模式”",
+                phone_step2_title: "🔒 第二步：保护账户", phone_step2_1: "更改密码", phone_step2_2: "远程登出",
+                phone_step2_3: "通知银行", phone_step2_4: "禁用移动支付",
+                phone_step3_title: "📞 第三步：报告并挂失", phone_step3_carrier: "联系运营商：",
+                phone_step3_1: "挂失SIM卡", phone_step3_2: "报告IMEI", phone_step3_3: "申请补卡",
+                phone_carriers: "墨西哥运营商：",
+                phone_step4_title: "👮 第四步：警方报告", phone_step4_text: "前往 'Ministerio Público'。携带：",
+                phone_step4_1: "护照/身份证", phone_step4_2: "手机详情", phone_step4_3: "地点/时间",
+                phone_contact_police: "📞不仅旅游警察",
+                lost_passport_title: "🛂 护照丢了？", lost_passport_subtitle: "保持冷静。按照这些步骤操作。",
+                passport_first_step: "⚠️ 重要第一步", passport_contact_embassy: "立即联系您的大使馆",
+                passport_go_embassy: "🏛 前往大使馆",
+                passport_step1_title: "📋 第一步：警方报告", passport_step1_text: "从MP获取 'Acta de Extravío'。",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "携带身份证", passport_step1_3: "认证副本",
+                passport_step1_note: "大使馆需要。",
+                passport_step2_title: "🏛 第二步：访问大使馆", passport_step2_bring: "携带：",
+                passport_step2_1: "警方报告", passport_step2_2: "2张照片", passport_step2_3: "身份证",
+                passport_step2_4: "公民身份证明", passport_step2_5: "行程单",
+                passport_step3_title: "📄 第三步：旅行证件", passport_step3_text: "大使馆签发：",
+                passport_step3_1: "紧急护照", passport_step3_2: "旅行证",
+                passport_processing: "处理：1-3天", passport_cost: "费用：~$100-200美元",
+                passport_step4_title: "✈️ 第四步：离境要求", passport_step4_text: "离开墨西哥：",
+                passport_step4_1: "旅行证件", passport_step4_2: "警方报告", passport_step4_3: "FMM副本",
+                passport_step4_note: "预留额外时间到机场。",
+                passport_tips_title: "💡 预防提示", passport_tip1: "保留数字副本", passport_tip2: "携带复印件",
+                passport_tip3: "使用酒店保险箱", passport_tip4: "在大使馆注册",
+                groups_title: "🏆 2026小组赛", groups_subtitle: "比赛小组",
+                ai_title: "🤖 AI助手", ai_subtitle: "随便问我！", ai_send: "发送",
+                ai_btn_tacos: "🌮 最好吃的塔可", ai_btn_stadium: "🏟️ 体育场", ai_btn_safety: "🛡️ 安全", ai_btn_spanish: "🗣️ 西班牙语",
+                ai_placeholder: "输入您的问题...",
+                info_title: "重要信息", info_matchday_alert: "比赛进行中",
+                info_surroundings_title: "🏟️ 体育场周边", info_surroundings_text: "国际通道4号门。使用轻轨。",
+                info_safety_title: "🛡️ 安全区", info_safety_text: "宪法广场球迷嘉年华是安全区。",
+                info_wifi_title: "📶 免费WiFi", info_wifi_text: "连接到 'CFE Internet para todos'。",
+                country_title: "智能国家信息", country_subtitle: "选择您的国家。",
+                dining_title: "传统餐饮", dining_subtitle: "地道体验", dining_top_picks: "今日精选",
+                transport_title: "公共交通", emergency_title: "紧急联系人", legal_title: "法律与保险",
+                activities_title: "行程", prices_title: "价格指南 (USD)", chat_title: "社区聊天"
+            },
+            ko: {
+                welcome: "안녕하세요! 환영합니다.",
+                subtitle: "2026 시즌을 위한 스마트 도우미. 시작하려면 아래 카테고리를 탭하세요.",
+                menu_lost_phone: "휴대전화 분실", menu_lost_passport: "여권 분실", menu_groups: "월드컵 조", menu_ai: "AI 도우미",
+                menu_embassies: "대사관", menu_country: "내 국가 정보", menu_info: "정보 및 경기일", menu_dining: "식사 가이드",
+                menu_transport: "교통", menu_emergency: "비상", menu_legal: "법률 및 보험", menu_itineraries: "일정",
+                menu_prices: "가격 가이드", menu_chat: "커뮤니티 채팅",
+                embassy_title: "대사관 디렉토리", embassy_subtitle: "멕시코시티 외교 연락처.",
+                lost_phone_title: "📱 휴대전화를 잃어버리셨나요?", lost_phone_subtitle: "당황하지 마세요! 다음 단계를 따르세요.",
+                phone_step1_title: "🚨 1단계: 즉각적인 조치", phone_step1_time: "1시간 이내:",
+                phone_step1_1: "본인 전화로 걸어보세요", phone_step1_2: "'내 기기 찾기' 사용",
+                phone_step1_3: "원격 잠금", phone_step1_4: "'분실 모드' 활성화",
+                phone_step2_title: "🔒 2단계: 계정 보안", phone_step2_1: "비밀번호 변경", phone_step2_2: "원격 로그아웃",
+                phone_step2_3: "은행에 알림", phone_step2_4: "모바일 결제 비활성화",
+                phone_step3_title: "📞 3단계: 신고 및 차단", phone_step3_carrier: "통신사에 연락하여:",
+                phone_step3_1: "SIM 카드 차단", phone_step3_2: "IMEI 신고", phone_step3_3: "재발급 요청",
+                phone_carriers: "멕시코 통신사:",
+                phone_step4_title: "👮 4단계: 경찰 신고", phone_step4_text: "'Ministerio Público'로 가세요. 준비물:",
+                phone_step4_1: "여권/신분증", phone_step4_2: "전화 상세 정보", phone_step4_3: "장소/시간",
+                phone_contact_police: "📞 관광 경찰 연락",
+                lost_passport_title: "🛂 여권을 잃어버리셨나요?", lost_passport_subtitle: "침착하세요. 다음 단계를 따르세요.",
+                passport_first_step: "⚠️ 중요한 첫 단계", passport_contact_embassy: "즉시 대사관에 연락하세요",
+                passport_go_embassy: "🏛 대사관으로 이동",
+                passport_step1_title: "📋 1단계: 경찰 보고서", passport_step1_text: "MP에서 '분실 증명서' 받기.",
+                passport_step1_1: "Ministerio Público", passport_step1_2: "신분증 지참", passport_step1_3: "공증 사본",
+                passport_step1_note: "대사관에 필요합니다.",
+                passport_step2_title: "🏛 2단계: 대사관 방문", passport_step2_bring: "지참물:",
+                passport_step2_1: "경찰 보고서", passport_step2_2: "사진 2매", passport_step2_3: "신분증",
+                passport_step2_4: "시민권 증명", passport_step2_5: "여행 일정",
+                passport_step3_title: "📄 3단계: 여행 서류", passport_step3_text: "대사관 발급:",
+                passport_step3_1: "긴급 여권", passport_step3_2: "여행 증명서",
+                passport_processing: "처리: 1-3일", passport_cost: "비용: ~$100-200 USD",
+                passport_step4_title: "✈️ 4단계: 출국 요구 사항", passport_step4_text: "멕시코 출국 시:",
+                passport_step4_1: "여행 서류", passport_step4_2: "경찰 보고서", passport_step4_3: "FMM 사본",
+                passport_step4_note: "공항에 여유 있게 도착하세요.",
+                passport_tips_title: "💡 예방 팁", passport_tip1: "디지털 사본 보관", passport_tip2: "사본 휴대",
+                passport_tip3: "호텔 금고 사용", passport_tip4: "대사관 등록",
+                groups_title: "🏆 2026 월드컵 조", groups_subtitle: "토너먼트 조",
+                ai_title: "🤖 AI 도우미", ai_subtitle: "무엇이든 물어보세요!", ai_send: "보내기",
+                ai_btn_tacos: "🌮 최고의 타코", ai_btn_stadium: "🏟️ 경기장", ai_btn_safety: "🛡️ 안전", ai_btn_spanish: "🗣️ 스페인어",
+                ai_placeholder: "질문을 입력하세요...",
+                info_title: "중요 정보", info_matchday_alert: "경기 진행 중",
+                info_surroundings_title: "🏟️ 경기장 주변", info_surroundings_text: "국제 출입구 4번 게이트. 경전철 이용.",
+                info_safety_title: "🛡️ 안전 구역", info_safety_text: "소칼로 팬 페스트는 안전 구역입니다.",
+                info_wifi_title: "📶 무료 WiFi", info_wifi_text: "'CFE Internet para todos'에 연결하세요.",
+                country_title: "스마트 국가 정보", country_subtitle: "국가를 선택하세요.",
+                dining_title: "전통 식사", dining_subtitle: "진정한 경험", dining_top_picks: "오늘의 추천",
+                transport_title: "대중 교통", emergency_title: "비상 연락처", legal_title: "법률 및 보험",
+                activities_title: "여행 일정", prices_title: "가격 가이드 (USD)", chat_title: "커뮤니티 채팅"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+        }
+
+        // --- NAVIGATION & LOGIC ---
+        function navTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+            if (pageId === 'home') {
+                document.getElementById('backBtn').style.visibility = 'hidden';
+                document.getElementById('homeBtn').style.visibility = 'hidden';
+            } else {
+                document.getElementById('backBtn').style.visibility = 'visible';
+                document.getElementById('homeBtn').style.visibility = 'visible';
+            }
+        }
+
+        function goHome() { navTo('home'); }
+
+        // --- AI ASSISTANT LOGIC ---
+        function askAI(question) {
+            document.getElementById('aiInput').value = question;
+            sendAIMessage();
+        }
+
+        function getSuggestion(type) {
+            const suggestions = {
+                tacos: "Where can I find the best tacos in Mexico City?",
+                stadium: "How do I get to Estadio Azteca from downtown?",
+                safety: "What are the most important safety tips for tourists?",
+                spanish: "Teach me 5 useful Mexican slang words."
+            };
+            return suggestions[type] || "";
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const txt = input.value.trim();
+            if (!txt) return;
+
+            addMsg(txt, 'user');
+            input.value = '';
+
+            const chatContainer = document.getElementById('aiChatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-msg assistant typing-indicator';
+            typingDiv.innerHTML = '<div class="ai-avatar">🤖</div><span></span><span></span><span></span>';
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            setTimeout(() => {
+                chatContainer.removeChild(typingDiv);
+                let response = "I'm processing your request about: " + txt + ". (Simulated AI Response)";
+                if (txt.toLowerCase().includes('taco')) response = "For the best tacos, try **El Califa de León** (San Rafael) for steaks, or **El Huequito** for Pastor. Don't forget 'Tacos de Canasta' on the streets!";
+                if (txt.toLowerCase().includes('safety')) response = "Stay in tourist zones (Roma, Condesa, Polanco, Centro). Use Uber/Didi, not street taxis. Keep valuables hidden. Emergency: 911.";
+                if (txt.toLowerCase().includes('stadium')) response = "To get to Estadio Azteca: Take Metro Line 2 (Blue) to Taxqueña, then transfer to the Light Rail (Tren Ligero) to 'Estadio Azteca' station. Follow the crowd!";
+                addMsg(response, 'assistant');
+            }, 1500);
+        }
+
+        function addMsg(txt, type) {
+            const container = document.getElementById('aiChatContainer');
+            const div = document.createElement('div');
+            div.className = `ai-msg ${type}`;
+            div.innerHTML = `<div class="ai-avatar">${type === 'user' ? '👤' : '🤖'}</div><div class="ai-bubble">${txt}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // --- OTHER LOGIC ---
+        function updateCountryInfo() {
+            const sel = document.getElementById('countrySelect');
+            const res = document.getElementById('countryResult');
+            const country = sel.value;
+            if (!country) return;
+
+            res.style.display = 'block';
+            document.getElementById('resCountryName').innerText = sel.options[sel.selectedIndex].text;
+
+            // Mock data
+            const data = {
+                usa: { visa: "None (<180 days)", tips: "15-20% is standard here too.", culture: "Lunch is later (2-4 PM)." },
+                spain: { visa: "None", tips: "10-15% (lower than Spain).", culture: "You'll feel at home with the language!" },
+                brazil: { visa: "Visa Required (Check recent changes)", tips: "10-15%.", culture: "Passionate fans everywhere." },
+                // ... defaults
+            };
+            const info = data[country] || { visa: "Check embassy", tips: "10-15%", culture: "Mexicans are very friendly!" };
+
+            document.getElementById('resVisa').innerText = info.visa;
+            document.getElementById('resTips').innerText = info.tips;
+            document.getElementById('resCulture').innerText = info.culture;
+        }
+
+        function showItinerary() {
+            const val = document.getElementById('itinerarySelect').value;
+            document.querySelectorAll('.itinerary-content').forEach(d => d.style.display = 'none');
+            if (val) {
+                document.getElementById('itineraryResult').style.display = 'block';
+                const el = document.getElementById(val + 'Itinerary');
+                if (el) el.style.display = 'block';
+            }
+        }
+
+        function sendMessage() {
+            const inp = document.getElementById('chatInput');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            const container = document.getElementById('chatContainer');
+            container.innerHTML += `<div class="msg me">${txt}</div>`;
+            inp.value = '';
+            container.scrollTop = container.scrollHeight;
+            setTimeout(() => {
+                container.innerHTML += `<div class="msg other"><strong>Bot:</strong> Nice message!</div>`;
+                container.scrollTop = container.scrollHeight;
+            }, 1000);
+        }
+
+    </script>
+</body>
+
+</html>
